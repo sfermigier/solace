@@ -27,7 +27,7 @@
             -   Babel
             -   creoleparser
             -   simplejson
-	    -	webdepcompress
+            -   webdepcompress
 
         If you want to hack on Solace on your own the best way to get
         started is using the all-mygthy `setup.py` script in a virtual
@@ -73,9 +73,9 @@
 
         When Solace initializes it checks for a `SOLACE_SETTINGS_FILE`
         operating system environment variable.  If it finds one, it will
-	execute the that file as a Python script and overrides the
-	assigned variables of the Solace enviroment script config
-	(`solace/settings.py`).
+        execute the that file as a Python script and overrides the
+        assigned variables of the Solace enviroment script config
+        (`solace/settings.py`).
 
         Example configuration:
 
@@ -150,10 +150,10 @@
 
             $ python setup.py make_testdata
 
-	Warning on tests: For tests make sure to have a newer version
-	than 0.5.1 in your venv (at the time of this writing this means
-	installing a development version) due to a bug in the redirect
-	support and path quoting of the test client in 0.5.1.
+        Warning on tests: For tests make sure to have a newer version
+        than 0.5.1 in your venv (at the time of this writing this means
+        installing a development version) due to a bug in the redirect
+        support and path quoting of the test client in 0.5.1.
 
     ~ QUICKSTART ~
 
