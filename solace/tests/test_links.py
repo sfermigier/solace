@@ -8,7 +8,7 @@
     :copyright: (c) 2009 by Plurk Inc., see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
-import re
+from lxml import html
 import unittest
 from urlparse import urljoin
 from solace.tests import SolaceTestCase
@@ -47,18 +47,18 @@ class LinkCheckTestCase(SolaceTestCase):
                 return
             response = self.client.get(path, follow_redirects=True)
             self.assertEqual(response.status_code, 200)
-            for link in response.html.xpath('//a[@href]'):
+            for link in html.fromstring(response.data).xpath('//a[@href]'):
                 visit(link.attrib['href'])
 
         # logged out
         visit('/')
-        self.assert_(len(visited_links) > MIN_VISITED)
+        self.assertGreater(len(visited_links), MIN_VISITED)
 
         # logged in
         visited_links.clear()
         self.login('user1', 'default')
         visit('/')
-        self.assert_(len(visited_links) > MIN_VISITED)
+        self.assertGreater(len(visited_links), MIN_VISITED)
 
 
 def suite():

@@ -9,6 +9,7 @@
     :license: BSD, see LICENSE for more details.
 """
 import unittest
+from lxml import html
 from solace.tests import SolaceTestCase
 
 from solace import models, settings
@@ -35,7 +36,9 @@ class KBViewsTestCase(SolaceTestCase):
         # capture it!
         topic_url = '/' + response.headers['Location'].split('/', 3)[-1]
         response = self.client.get(topic_url)
-        q = response.html.xpath
+
+        # was: q = response.html.xpath
+        q = html.fromstring(response.data).xpath
 
         # we have a headline
         self.assertEqual(q('//h1')[0].text, 'Hello World')
@@ -55,7 +58,7 @@ class KBViewsTestCase(SolaceTestCase):
         response = self.submit_form(topic_url, {
             'text':     'This is a reply\n\nwith //text//'
         }, follow_redirects=True)
-        q = response.html.xpath
+        q = html.fromstring(response.data).xpath
 
         # do we have the text?
         pars = q('//div[@class="replies"]//div[@class="text"]/p')
@@ -77,7 +80,8 @@ class KBViewsTestCase(SolaceTestCase):
         tquid = topic.question.id
 
         def get_vote_count(response):
-            el = response.html.xpath('//div[@class="votebox"]/h4')
+            # was: el = response.html.xpath('//div[@class="votebox"]/h4')
+            el = html.fromstring(response.data).xpath('//div[@class="votebox"]/h4')
             return int(el[0].text)
 
         vote_url = '/_vote/%s?val=%%d&_xt=%s' % (tquid, self.get_exchange_token())

@@ -1,0 +1,10 @@
+Werkzeug
+Jinja2
+Babel
+SQLAlchemy
+creoleparser
+simplejson
+webdepcompress
+translitcodec
+lxml
+html5lib

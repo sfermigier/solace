@@ -8,13 +8,16 @@
     :copyright: (c) 2009 by Plurk Inc., see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
+from StringIO import StringIO
 import os
 import tempfile
 import unittest
+import sys
 import warnings
 from simplejson import loads
 from email import message_from_string
 from lxml import etree
+from lxml import html
 from html5lib import HTMLParser
 from html5lib.treebuilders import getTreeBuilder
 
@@ -95,7 +98,9 @@ class SolaceTestCase(unittest.TestCase):
     def submit_form(self, path, data, follow_redirects=False):
         response = self.client.get(path)
         try:
-            form = response.html.xpath('//form')[0]
+            tree = html.fromstring(response.data)
+            form = tree.xpath('//form')[0]
+            #was: form = response.html.xpath('//form')[0]
         except IndexError:
             raise RuntimeError('no form on page')
         csrf_token = form.xpath('//input[@name="_csrf_token"]')[0]
@@ -130,15 +135,15 @@ class SolaceTestCase(unittest.TestCase):
 
 
 def suite():
-    from solace.tests import models, querycount, kb_views, core_views, \
-         templating, signals, link_check, validation
+    from solace.tests import test_models, test_querycount, test_kb_views, test_core_views,\
+      test_templating, test_signals, test_links, test_validation
     suite = unittest.TestSuite()
-    suite.addTest(models.suite())
-    suite.addTest(querycount.suite())
-    suite.addTest(kb_views.suite())
-    suite.addTest(core_views.suite())
-    suite.addTest(templating.suite())
-    suite.addTest(signals.suite())
-    suite.addTest(link_check.suite())
-    suite.addTest(validation.suite())
+    suite.addTest(test_models.suite())
+    suite.addTest(test_querycount.suite())
+    suite.addTest(test_kb_views.suite())
+    suite.addTest(test_core_views.suite())
+    suite.addTest(test_templating.suite())
+    suite.addTest(test_signals.suite())
+    suite.addTest(test_links.suite())
+    suite.addTest(test_validation.suite())
     return suite

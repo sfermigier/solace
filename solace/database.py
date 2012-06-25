@@ -90,7 +90,8 @@ def atomic_add(obj, column, delta, expire=False):
 
     val = orm.attributes.get_attribute(obj, column)
     if expire:
-        orm.attributes.instance_state(obj).expire_attributes([column])
+        state = orm.attributes.instance_state(obj)
+        state.expire_attributes(state.dict, [column])
     else:
         orm.attributes.set_committed_value(obj, column, val + delta)
 

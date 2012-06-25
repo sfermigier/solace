@@ -87,7 +87,7 @@ class SignalTestCase(SolaceTestCase):
 
     def test_SIG(self):
         """Tests the `SIG` function"""
-        self.assertEqual(repr(TEST_SIGNAL), 'solace.tests.signals.TEST_SIGNAL')
+        self.assertEqual(repr(TEST_SIGNAL).split(".")[-1], 'TEST_SIGNAL')
 
     def test_model_signals(self):
         """Model signalling"""
